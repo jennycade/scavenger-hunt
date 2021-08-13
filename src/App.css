@@ -10,10 +10,11 @@ img.scavengerhunt {
 
 /* MENU */
 .menu {
+  border: 1px solid rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, .9);
   padding: 0;
   border-radius: 0 0.5rem 0.5rem 0.5rem;
-  box-shadow: rgba(0, 0, 0, 0.2) 0.5rem 0.5rem 2px 1px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0.5rem 0.5rem 10px 1px;
 }
 
 .menu header, .menu li {

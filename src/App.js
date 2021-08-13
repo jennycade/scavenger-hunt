@@ -55,9 +55,18 @@ function App() {
     // {name: 'Spotify', found: false, locus: [], },
   ]);
 
+  // TODO: write function that marks item as found
+  // TODO: pass ^ function to <Menu />
+
   const [display, setDisplay] = useState('image');
 
   const dim = { width: 1200, height: 1840 };
+
+  const escapeMenu = (event) => {
+    if (event.target.className === 'App') { // clicked outside the image and menu
+      setDisplay('image');
+    }
+  }
 
   const captureClick = (event) => {
     // click
@@ -84,7 +93,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App" onClick={ escapeMenu }>
       <p>You clicked on ({ coord[0] }, { coord[1] })</p>
       <p>Relative to the image: ({ relCoord[0] }, { relCoord[1] })</p>
       <p>Image coordinates:</p>
