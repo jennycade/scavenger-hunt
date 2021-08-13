@@ -4,9 +4,6 @@ const Menu = (props) => {
   // props
   const { pageX, pageY, items } = props;
 
-
-
-
   const style = {
     position: 'absolute',
     left: pageX,
@@ -18,7 +15,7 @@ const Menu = (props) => {
       <header>Choose an item</header>
       <ul>
         { items.map( item => { // { str name, bool found, locus: { minx, miny, maxx, maxy } }
-            return (<li>{ item.name }</li>);
+            return (<li key={ item.name }>{ item.name }</li>);
         }) }
       </ul>
     </div>
