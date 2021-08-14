@@ -1,6 +1,6 @@
 const ItemBorder = ( props ) => {
   // destructure props
-  const { item, imgRectangle } = props;
+  const { item, imgRectangle, dim } = props;
 
   // ahhhhh geometry
   const itemWidth = item.maxx - item.minx;
@@ -9,7 +9,7 @@ const ItemBorder = ( props ) => {
   const imgWidth = imgRectangle.right - imgRectangle.left;
   const imgHeight = imgRectangle.bottom - imgRectangle.top;
 
-  const scale = itemWidth / imgWidth; // TODO: Make this state variable to work with resizing?
+  const scale = imgWidth / dim.width; // TODO: Make this state variable to work with resizing?
   const xoffset = imgRectangle.left;
   const yoffset = imgRectangle.top;
 

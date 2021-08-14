@@ -45,7 +45,7 @@ function App() {
     // {name: 'Pinterest', found: false, },
     // {name: 'Snapchat', found: false, },
     // {name: 'Bitcoin', found: false, },
-    {name: 'Google\'s lofty heights', found: false, minx: 55, miny: 317, maxx: 378, maxy: 297},
+    {name: 'Google\'s lofty heights', found: false, minx: 55, miny: 297, maxx: 378, maxy: 317}, // TODO: Fix the y coords!
     // {name: 'Earbuds', found: false, },
     // {name: 'Corgi butt', found: false, },
     // {name: 'Sandwich', found: false, },
@@ -58,6 +58,10 @@ function App() {
     // {name: 'The dark web', found: false, },
     // {name: 'Antiquated browsers', found: false, },
     // {name: 'Spotify', found: false, },
+    {name: 'topleft', found: true, minx: 0, miny: 0, maxx: 100, maxy: 100},
+    {name: 'topright', found: true, minx: 1200-100, miny: 0, maxx: 1200, maxy: 100},
+    {name: 'bottomleft', found: true, minx: 0, miny: 1840-100, maxx: 100, maxy: 1840},
+    {name: 'bottomright', found: true, minx: 1200-100, miny: 1840-100, maxx: 1200, maxy: 1840},
   ]);
   const [display, setDisplay] = useState('image');
 
@@ -134,7 +138,7 @@ function App() {
       </ul> */}
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } items={ items } tagItem={ tagItem } /> : undefined }
-      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } />) }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } />) }
     </div>
   );
 }
