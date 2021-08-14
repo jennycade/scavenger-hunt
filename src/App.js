@@ -138,12 +138,12 @@ function App() {
 
   // FORMAT TIME
   const formatTime = (seconds) => {
-    if (seconds < 60) {
-      return `${seconds}`;
-    } else if (seconds < 60 * 60) {
+    if (seconds < 60) { // seconds
+      return `${seconds}`.padStart(5, '00:00');
+    } else if (seconds < 60 * 60) { // minutes
       const remainder = seconds % 60;
-      return `${(seconds - remainder) / 60}:${formatTime(remainder)}`;
-    } else {
+      return `${(seconds - remainder) / 60}:${formatTime(remainder)}`.padStart(5, '0');
+    } else { // hours
       const remainder = seconds % (60*60);
       return `${(seconds - remainder) / (60*60)}:${formatTime(remainder)}`;
     }
@@ -156,7 +156,7 @@ function App() {
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 
       <div className="info">
-        <p>Time: { formatTime(time) } ({time} seconds)</p>
+        <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
       </div>
       
