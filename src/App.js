@@ -139,10 +139,11 @@ function App() {
   // FORMAT TIME
   const formatTime = (seconds) => {
     if (seconds < 60) { // seconds
-      return `${seconds}`.padStart(5, '00:00');
+      return `${seconds}`.padStart(3, ':00'); // TODO: Make this match format 00:00 without screwing up time >= 60
+
     } else if (seconds < 60 * 60) { // minutes
       const remainder = seconds % 60;
-      return `${(seconds - remainder) / 60}:${formatTime(remainder)}`.padStart(5, '0');
+      return `${(seconds - remainder) / 60}${formatTime(remainder)}`.padStart(5, '0');
     } else { // hours
       const remainder = seconds % (60*60);
       return `${(seconds - remainder) / (60*60)}:${formatTime(remainder)}`;
