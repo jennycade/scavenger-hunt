@@ -9,6 +9,8 @@ import './App.css';
 import internet from './the-internet.jpg';
 import FadingMessage from './FadingMessage';
 
+import firebase from './Config';
+
 function App() {
   // constants
   const dim = { width: 1200, height: 1840 };
@@ -68,6 +70,8 @@ function App() {
   const [time, setTime] = useState(0);
 
   const [message, setMessage] = useState('bloop');
+
+  const [phase, setPhase] = useState('playing');
 
   // TIMER
   useEffect(() => {
