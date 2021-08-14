@@ -65,26 +65,33 @@ function App() {
   ]);
   const [display, setDisplay] = useState('image');
 
-  // TODO: Write component for FoundItem. Rendered as items.filter(found === true).map(item => <FoundItem .../>)
-
-  // TODO: write function that marks item as found
-  // TODO: pass ^ function to <Menu />
   const tagItem = (itemName) => {
-    // TODO: check coordinates (& not already found)
-
-    // change state
-    const newItems = [...items];
-
     // get the right item
+    const newItems = [...items];
     const foundItem = newItems.filter(item => item.name === itemName)[0] // TODO: Rewrite for multiple matches (cats!)
     const foundIndex = items.indexOf(foundItem);
+    // TODO: check coordinates (& not already found)
+    if (!foundItem.found) { // not already found
+      // calculate relative coords
+      if (
+        foundItem.minx / dim.width < relCoord[0] &&
+        foundItem.maxx / dim.width > relCoord[0] &&
+        foundItem.miny / dim.height < relCoord[1] &&
+        foundItem.maxy / dim.height > relCoord[1]
+      ) {
+        console.log(`You found ${foundItem.name}`);
+        // assign item found: true
+        foundItem.found = true;
 
-    // assign item found: true
-    foundItem.found = true;
-
-    // update the items state variable
-    newItems.splice(foundIndex, 1, foundItem);
-    setItems(newItems);
+        // update the items state variable
+        newItems.splice(foundIndex, 1, foundItem);
+        setItems(newItems);
+      } else {
+        console.log(`Nope, ${foundItem.name} isn't there. Try again.`);
+      }
+    }
+    
+    
 
     // update display
     setDisplay('image')
