@@ -39,3 +39,7 @@ img.scavengerhunt {
 .menu li:hover {
   background-color: #fff;
 }
+
+.foundItem {
+  color: rgba(0, 0, 0, 0.2);
+}
