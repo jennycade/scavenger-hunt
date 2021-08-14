@@ -8,6 +8,18 @@ img.scavengerhunt {
   height: 100%;
 }
 
+/* INFO BAR */
+.info {
+  float: right;
+  clear: right;
+
+  padding: 1rem;
+
+  background-color: navy;
+  color: white;
+  font-weight: bold;
+}
+
 /* MENU */
 .menu {
   border: 1px solid rgba(0, 0, 0, 0.2);

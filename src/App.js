@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // components
 import Menu from './Menu';
@@ -19,10 +19,10 @@ function App() {
   const [pageX, setPageX] = useState(0);
   const [pageY, setPageY] = useState(0);
   const [items, setItems] = useState([ // { str name, bool found, int minx, int miny, int maxx, int maxy }
-    // {name: 'The death of print', },
+    // {name: 'The death of print', found: false, },
     {name: 'Audible', found: false, minx: 617, miny: 980, maxx: 685, maxy: 1027},
     {name: 'Reddit robot', found: false, minx: 194, miny: 1103, maxx: 280, maxy: 1209},
-    {name: 'Amazon\'s expanding brand', found: false, minx: 519, miny: 1200, maxx: 837, maxy: 1408}, // relative: 0.4325	0.652173913	0.6975	0.7652173913
+    {name: 'Amazon\'s expanding brand', found: false, minx: 519, miny: 1200, maxx: 837, maxy: 1408},
     // {name: 'Uber', found: false, },
     // {name: 'Nine cats', found: false, },
     // {name: 'Twitch', found: false, },
@@ -58,13 +58,23 @@ function App() {
     // {name: 'The dark web', found: false, },
     // {name: 'Antiquated browsers', found: false, },
     // {name: 'Spotify', found: false, },
-    {name: 'topleft', found: true, minx: 0, miny: 0, maxx: 100, maxy: 100},
-    {name: 'topright', found: true, minx: 1200-100, miny: 0, maxx: 1200, maxy: 100},
-    {name: 'bottomleft', found: true, minx: 0, miny: 1840-100, maxx: 100, maxy: 1840},
-    {name: 'bottomright', found: true, minx: 1200-100, miny: 1840-100, maxx: 1200, maxy: 1840},
+    // {name: 'topleft', found: true, minx: 0, miny: 0, maxx: 100, maxy: 100},
+    // {name: 'topright', found: true, minx: 1200-100, miny: 0, maxx: 1200, maxy: 100},
+    // {name: 'bottomleft', found: true, minx: 0, miny: 1840-100, maxx: 100, maxy: 1840},
+    // {name: 'bottomright', found: true, minx: 1200-100, miny: 1840-100, maxx: 1200, maxy: 1840},
   ]);
   const [display, setDisplay] = useState('image');
+  const [time, setTime] = useState(0);
 
+  // TIMER
+  useEffect(() => {
+    let interval = setInterval(() => {
+      setTime(time => time + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [time]);
+
+  // TAGGING
   const tagItem = (itemName) => {
     // get the right item
     const newItems = [...items];
@@ -88,20 +98,15 @@ function App() {
         setItems(newItems);
       } else {
         console.log(`Nope, ${foundItem.name} isn't there. Try again.`);
+        // TODO: Give some feedback on item not found!
       }
     }
-    
-    
-
     // update display
     setDisplay('image')
-
   }
 
 
-  // 
-
-  // DISPLAY CHANGING WITH CLICKS
+  // DISPLAY CHANGE ON CLICKS
   const escapeMenu = (event) => {
     if (event.target.className === 'App') { // clicked outside the image and menu
       setDisplay('image');
@@ -131,21 +136,34 @@ function App() {
     setDisplay('menu');
   }
 
+  // FORMAT TIME
+  const formatTime = (seconds) => {
+    if (seconds < 60) {
+      return `${seconds}`;
+    } else if (seconds < 60 * 60) {
+      const remainder = seconds % 60;
+      return `${(seconds - remainder) / 60}:${formatTime(remainder)}`;
+    } else {
+      const remainder = seconds % (60*60);
+      return `${(seconds - remainder) / (60*60)}:${formatTime(remainder)}`;
+    }
+  }
+
   // RENDER
   return (
     <div className="App" onClick={ escapeMenu }>
-      {/* <p>You clicked on ({ coord[0] }, { coord[1] })</p>
-      <p>Relative to the image: ({ relCoord[0] }, { relCoord[1] })</p>
-      <p>Image coordinates:</p>
-      <ul>
-        <li>top: { imgRectangle.top }</li>
-        <li>bottom: { imgRectangle.bottom }</li>
-        <li>left: { imgRectangle.left }</li>
-        <li>right: { imgRectangle.right }</li>
-      </ul> */}
+
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
-      { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } items={ items } tagItem={ tagItem } /> : undefined }
+
+      <div className="info">
+        <p>Time: { formatTime(time) } ({time} seconds)</p>
+        <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
+      </div>
+      
       { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } />) }
+
+      { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } items={ items } tagItem={ tagItem } /> : undefined }
+
     </div>
   );
 }
