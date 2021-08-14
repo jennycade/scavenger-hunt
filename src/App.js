@@ -7,6 +7,7 @@ import ItemBorder from './ItemBorder';
 import './App.css';
 
 import internet from './the-internet.jpg';
+import FadingMessage from './FadingMessage';
 
 function App() {
   // constants
@@ -66,6 +67,8 @@ function App() {
   const [display, setDisplay] = useState('image');
   const [time, setTime] = useState(0);
 
+  const [message, setMessage] = useState('bloop');
+
   // TIMER
   useEffect(() => {
     let interval = setInterval(() => {
@@ -97,14 +100,17 @@ function App() {
         newItems.splice(foundIndex, 1, foundItem);
         setItems(newItems);
       } else {
-        console.log(`Nope, ${foundItem.name} isn't there. Try again.`);
-        // TODO: Give some feedback on item not found!
+        displayMessage(`Nope, ${foundItem.name} isn't there. Try again.`);
       }
     }
     // update display
     setDisplay('image')
   }
 
+  // display message
+  const displayMessage = (message) => {
+    setMessage(message);
+  }
 
   // DISPLAY CHANGE ON CLICKS
   const escapeMenu = (event) => {
@@ -153,6 +159,7 @@ function App() {
   // RENDER
   return (
     <div className="App" onClick={ escapeMenu }>
+      <FadingMessage message={ message } delay={ 5000 } />
 
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 
