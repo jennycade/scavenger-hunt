@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 // components
 import Menu from './Menu';
+import ItemBorder from './ItemBorder';
 
 import './App.css';
 
@@ -122,7 +123,7 @@ function App() {
   // RENDER
   return (
     <div className="App" onClick={ escapeMenu }>
-      <p>You clicked on ({ coord[0] }, { coord[1] })</p>
+      {/* <p>You clicked on ({ coord[0] }, { coord[1] })</p>
       <p>Relative to the image: ({ relCoord[0] }, { relCoord[1] })</p>
       <p>Image coordinates:</p>
       <ul>
@@ -130,9 +131,10 @@ function App() {
         <li>bottom: { imgRectangle.bottom }</li>
         <li>left: { imgRectangle.left }</li>
         <li>right: { imgRectangle.right }</li>
-      </ul>
+      </ul> */}
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } items={ items } tagItem={ tagItem } /> : undefined }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } />) }
     </div>
   );
 }
