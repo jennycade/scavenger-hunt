@@ -76,6 +76,9 @@ function App() {
   const [phase, setPhase] = useState('playing');
   const [sessionID, setSessionID] = useState('');
 
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState();
+
   // test firebase
   const firebaseApp = firebase.apps[0];
 
@@ -140,11 +143,37 @@ function App() {
     }
     // update display
     setDisplay('image')
+
+    // check for win
+    if (items.filter(item => item.found).length === items.length) {
+      win();
+      console.log(startTime);
+      console.log(endTime);
+    }
   }
 
   // display message
   const displayMessage = (message) => {
     setMessage(message);
+  }
+
+  // WINNING
+  const win = () => {
+    displayMessage(`You won!`);
+
+    // record end time in firebase
+    const sessionRef = db.collection('sessions').doc(sessionID);
+    sessionRef.update({
+      endTime: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      // get start and end times
+      sessionRef.get()
+      .then((doc) => {
+        setStartTime(doc.data().startTime.toDate());
+        setEndTime(doc.data().endTime.toDate());
+      })
+    })
   }
 
   // DISPLAY CHANGE ON CLICKS
@@ -202,6 +231,7 @@ function App() {
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
         <p>Session ID: { sessionID }</p>
+        
       </div>
       
       { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } />) }
