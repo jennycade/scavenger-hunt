@@ -74,11 +74,22 @@ function App() {
   const [message, setMessage] = useState('bloop');
 
   const [phase, setPhase] = useState('playing');
+  const [sessionID, setSessionID] = useState('');
 
   // test firebase
   const firebaseApp = firebase.apps[0];
 
-  // TODO: SESSION START
+  // SESSION START
+  useEffect(() => {
+    // add a game session in firebase
+    db.collection('sessions').add({
+      startTime: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then((docRef) => {
+      // retrieve the id and set state
+      setSessionID(docRef.id);
+    });
+  }, []);
 
   // GET ITEMS
   useEffect(() => {
@@ -190,6 +201,7 @@ function App() {
       <div className="info">
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
+        <p>Session ID: { sessionID }</p>
       </div>
       
       { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } />) }
