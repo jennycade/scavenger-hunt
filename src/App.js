@@ -82,6 +82,8 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState();
 
+  const [totalms, setTotalms] = useState(Infinity);
+
   // test firebase
   const firebaseApp = firebase.apps[0];
 
@@ -168,6 +170,7 @@ function App() {
   // WINNING
   const win = () => {
     displayMessage(`You won!`);
+    setDisplay('scores');
     // stop the clock
     setRunTimer(false);
 
@@ -180,10 +183,13 @@ function App() {
       // get start and end times
       sessionRef.get()
       .then((doc) => {
-        console.log(doc.data().startTime.toDate());
-        console.log(doc.data().endTime.toDate());
-        setStartTime(doc.data().startTime.toDate());
-        setEndTime(doc.data().endTime.toDate());
+        setTotalms( doc.data().endTime.toDate() - doc.data().startTime.toDate() );
+      })
+      .then(() => {
+        // add totalms to firestore
+        sessionRef.update({
+          totalms: totalms
+        })
       })
     })
   }
@@ -243,7 +249,7 @@ function App() {
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
         <p>Session ID: { sessionID }</p>
-        <p>Total time: { endTime - startTime }</p>
+        <p>Total time: { totalms }</p>
         
       </div>
       
