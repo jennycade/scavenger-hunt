@@ -10,6 +10,7 @@ import internet from './the-internet.jpg';
 import FadingMessage from './FadingMessage';
 
 import { firebase, app, db } from './Config';
+import Scoreboard from './Scoreboard';
 
 function App() {
   // constants
@@ -74,15 +75,14 @@ function App() {
   const [runTimer, setRunTimer] = useState(false);
   const [time, setTime] = useState(0);
 
-  const [message, setMessage] = useState('bloop');
+  const [message, setMessage] = useState('');
 
-  const [phase, setPhase] = useState('playing');
   const [sessionID, setSessionID] = useState('');
 
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState();
-
+  // scores
   const [totalms, setTotalms] = useState(Infinity);
+  const [userName, setUserName] = useState('Anonymous');
+  const [sessions, setSessions] = useState([]);
 
   // test firebase
   const firebaseApp = firebase.apps[0];
@@ -157,8 +157,6 @@ function App() {
     // check for win
     if (items.filter(item => item.found).length === items.length) {
       win();
-      console.log(startTime);
-      console.log(endTime);
     }
   }
 
@@ -170,7 +168,7 @@ function App() {
   // WINNING
   const win = () => {
     displayMessage(`You won!`);
-    setDisplay('scores');
+    setDisplay('submit score');
     // stop the clock
     setRunTimer(false);
 
@@ -192,6 +190,32 @@ function App() {
         })
       })
     })
+  }
+  // input
+  const handleUserNameChange = (e) => {
+    const newValue = e.target.value;
+    setUserName(newValue);
+  }
+  const submitUserName = () => {
+    const sessionRef = db.collection('sessions').doc(sessionID);
+    sessionRef.update({
+      userName: userName,
+    })
+    .then(() => {
+      // get all session data for high scores
+      const newSessions = [];
+      db.collection('sessions')
+        .orderBy('timems', 'desc')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const session = doc.data();
+            newSessions.push(session);
+          })
+        });
+      setSessions(newSessions);
+    });
+    setDisplay('scores')
   }
 
   // DISPLAY CHANGE ON CLICKS
@@ -242,6 +266,16 @@ function App() {
   return (
     <div className="App" onClick={ escapeMenu }>
       <FadingMessage message={ message } delay={ 5000 } />
+
+      { display === 'submit score' ? (
+        <div className="submitScore">
+          <label>Submit your name to the high scores list</label>
+          <input type='text' value={ userName } onChange={ handleUserNameChange } />
+          <button onClick={ submitUserName }>Submit</button>
+        </div>
+      ) : undefined }
+
+      { display === 'scores' ? <Scoreboard sessionID={ sessionID } sessions={ sessions } /> : undefined }
 
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 
