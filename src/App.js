@@ -69,6 +69,9 @@ function App() {
   //   // {name: 'bottomright', found: true, minx: 1200-100, miny: 1840-100, maxx: 1200, maxy: 1840},
   // ]);
   const [display, setDisplay] = useState('image');
+
+  // timer
+  const [runTimer, setRunTimer] = useState(false);
   const [time, setTime] = useState(0);
 
   const [message, setMessage] = useState('bloop');
@@ -91,6 +94,9 @@ function App() {
     .then((docRef) => {
       // retrieve the id and set state
       setSessionID(docRef.id);
+
+      // start the timer
+      setRunTimer(true);
     });
   }, []);
 
@@ -109,11 +115,13 @@ function App() {
 
   // TIMER
   useEffect(() => {
-    let interval = setInterval(() => {
-      setTime(time => time + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [time]);
+    if (runTimer) {
+      let interval = setInterval(() => {
+        setTime(time => time + 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [time, runTimer]);
 
   // TAGGING
   const tagItem = (itemName) => {
@@ -160,16 +168,20 @@ function App() {
   // WINNING
   const win = () => {
     displayMessage(`You won!`);
+    // stop the clock
+    setRunTimer(false);
 
     // record end time in firebase
     const sessionRef = db.collection('sessions').doc(sessionID);
     sessionRef.update({
       endTime: firebase.firestore.FieldValue.serverTimestamp(),
     })
-    .then(() => {
+    .then(() => { // TODO: get this to work. startTime and endTime are maybe not set? I can't tell.
       // get start and end times
       sessionRef.get()
       .then((doc) => {
+        console.log(doc.data().startTime.toDate());
+        console.log(doc.data().endTime.toDate());
         setStartTime(doc.data().startTime.toDate());
         setEndTime(doc.data().endTime.toDate());
       })
@@ -231,6 +243,7 @@ function App() {
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
         <p>Session ID: { sessionID }</p>
+        <p>Total time: { endTime - startTime }</p>
         
       </div>
       
