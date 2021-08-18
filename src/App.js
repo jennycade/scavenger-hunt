@@ -131,7 +131,7 @@ function App() {
     const newItems = [...items];
     const foundItem = newItems.filter(item => item.name === itemName)[0] // TODO: Rewrite for multiple matches (cats!)
     const foundIndex = items.indexOf(foundItem);
-    // TODO: check coordinates (& not already found)
+    // check coordinates (& not already found)
     if (!foundItem.found) { // not already found
       // calculate relative coords
       if (
@@ -181,47 +181,73 @@ function App() {
       // get start and end times
       sessionRef.get()
       .then((doc) => {
-        setTotalms( doc.data().endTime.toDate() - doc.data().startTime.toDate() );
+        const newTotalms = doc.data().endTime.toDate() - doc.data().startTime.toDate()
+        setTotalms( newTotalms );
       })
-      .then(() => {
-        // add totalms to firestore
-        sessionRef.update({
-          totalms: totalms
-        })
-      })
+      // .then(() => {
+      //   // add totalms to firestore
+      //   sessionRef.update({
+      //     totalms: totalms
+      //   })
+      // })
     })
   }
+
+  // effect to update firebase with totalms
+  useEffect(() => {
+    if (totalms < Infinity) {
+      // write to db
+      const sessionRef = db.collection('sessions').doc(sessionID);
+      sessionRef.update({
+        totalms: totalms,
+      });
+    }
+  }, [totalms, sessionID]);
+
   // input
   const handleUserNameChange = (e) => {
     const newValue = e.target.value;
     setUserName(newValue);
   }
+
+  // effect to update scores
+  useEffect(() => {
+    if (display === 'scores') {
+      getScores();
+    }
+  }, [display]);
+
+
+  const getScores = () => {
+    const newSessions = [];
+    db.collection('sessions')
+      .orderBy('totalms', 'asc')
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          const session = { id: doc.id, ...doc.data() };
+          newSessions.push(session);
+        });
+      });
+    setSessions(newSessions);
+  }
+
   const submitUserName = () => {
     const sessionRef = db.collection('sessions').doc(sessionID);
     sessionRef.update({
       userName: userName,
     })
     .then(() => {
-      // get all session data for high scores
-      const newSessions = [];
-      db.collection('sessions')
-        .orderBy('timems', 'desc')
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const session = doc.data();
-            newSessions.push(session);
-          })
-        });
-      setSessions(newSessions);
+      setDisplay('scores')
     });
-    setDisplay('scores')
   }
 
   // DISPLAY CHANGE ON CLICKS
   const escapeMenu = (event) => {
     if (event.target.className === 'App') { // clicked outside the image and menu
-      setDisplay('image');
+      if (display !== 'scores') {
+        setDisplay('image');
+      }
     }
   }
   const captureImgClick = (event) => {
@@ -284,6 +310,7 @@ function App() {
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
         <p>Session ID: { sessionID }</p>
         <p>Total time: { totalms }</p>
+        <p><button onClick={ () => setDisplay('scores') } >High Scores</button></p>
         
       </div>
       
