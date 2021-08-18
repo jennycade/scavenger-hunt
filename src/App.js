@@ -177,20 +177,14 @@ function App() {
     sessionRef.update({
       endTime: firebase.firestore.FieldValue.serverTimestamp(),
     })
-    .then(() => { // TODO: get this to work. startTime and endTime are maybe not set? I can't tell.
+    .then(() => {
       // get start and end times
       sessionRef.get()
       .then((doc) => {
         const newTotalms = doc.data().endTime.toDate() - doc.data().startTime.toDate()
         setTotalms( newTotalms );
-      })
-      // .then(() => {
-      //   // add totalms to firestore
-      //   sessionRef.update({
-      //     totalms: totalms
-      //   })
-      // })
-    })
+      });
+    });
   }
 
   // effect to update firebase with totalms
@@ -213,24 +207,22 @@ function App() {
   // effect to update scores
   useEffect(() => {
     if (display === 'scores') {
-      getScores();
+      const newSessions = [];
+      db.collection('sessions')
+        .orderBy('totalms', 'asc')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const session = { id: doc.id, ...doc.data() };
+            newSessions.push(session);
+          });
+        });
+      setSessions(newSessions);
     }
   }, [display]);
 
 
-  const getScores = () => {
-    const newSessions = [];
-    db.collection('sessions')
-      .orderBy('totalms', 'asc')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const session = { id: doc.id, ...doc.data() };
-          newSessions.push(session);
-        });
-      });
-    setSessions(newSessions);
-  }
+
 
   const submitUserName = () => {
     const sessionRef = db.collection('sessions').doc(sessionID);

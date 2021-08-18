@@ -5,11 +5,10 @@ const Scoreboard = ( props ) => {
 
   // TODO: sessions.map() displays nothing. Start here next time!
 
-  console.table(sessions);
-
   return (
     <div className="scoreboard">
       <header>High Scores</header>
+      <p>{ sessions.length } people have completed the game.</p>
       <ul>
         { sessions.map( (session) => {
           let className = '';
