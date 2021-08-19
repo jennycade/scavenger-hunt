@@ -1,9 +1,9 @@
 const Scoreboard = ( props ) => {
   const { sessions, sessionID } = props;
-  // scores should be an array of all scores, ordered by ms ascending
-  // arr scores = [ { id, startTime, endTime, totalms, userName }, ... ]
+  // sessions is an array from firestore
+  // arr sessions = [ { id, startTime, endTime, totalms, userName }, ... ]
 
-  // TODO: sessions.map() displays nothing. Start here next time!
+  // TODO: sessions.map() displays nothing unless the timer is running in App.js
 
   return (
     <div className="scoreboard">

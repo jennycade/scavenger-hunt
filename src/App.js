@@ -221,9 +221,6 @@ function App() {
     }
   }, [display]);
 
-
-
-
   const submitUserName = () => {
     const sessionRef = db.collection('sessions').doc(sessionID);
     sessionRef.update({
@@ -293,7 +290,7 @@ function App() {
         </div>
       ) : undefined }
 
-      { display === 'scores' ? <Scoreboard sessionID={ sessionID } sessions={ sessions } /> : undefined }
+      <Scoreboard sessionID={ sessionID } sessions={ sessions } />
 
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 
