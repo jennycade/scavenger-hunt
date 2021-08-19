@@ -181,6 +181,7 @@ function App() {
       // get start and end times
       sessionRef.get()
       .then((doc) => {
+        // calculate score
         const newTotalms = doc.data().endTime.toDate() - doc.data().startTime.toDate()
         setTotalms( newTotalms );
       });
@@ -207,19 +208,24 @@ function App() {
   // effect to update scores
   useEffect(() => {
     if (display === 'scores') {
-      const newSessions = [];
+      
       db.collection('sessions')
         .orderBy('totalms', 'asc')
         .get()
         .then((querySnapshot) => {
+          const newSessions = [];
           querySnapshot.forEach((doc) => {
             const session = { id: doc.id, ...doc.data() };
             newSessions.push(session);
-          });
-        });
-      setSessions(newSessions);
+          })
+          return newSessions;
+        })
+        .then((newSessions) => {
+          setSessions(newSessions);
+        })
+      // setSessions(newSessions);
     }
-  }, [display]);
+  }, [display, setSessions]);
 
   const submitUserName = () => {
     const sessionRef = db.collection('sessions').doc(sessionID);
@@ -290,7 +296,7 @@ function App() {
         </div>
       ) : undefined }
 
-      <Scoreboard sessionID={ sessionID } sessions={ sessions } />
+      <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } />
 
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 
