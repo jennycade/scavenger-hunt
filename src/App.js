@@ -212,18 +212,17 @@ function App() {
       db.collection('sessions')
         .orderBy('totalms', 'asc')
         .get()
-        .then((querySnapshot) => {
-          const newSessions = [];
-          querySnapshot.forEach((doc) => {
-            const session = { id: doc.id, ...doc.data() };
-            newSessions.push(session);
-          })
-          return newSessions;
+      .then((querySnapshot) => {
+        const newSessions = [];
+        querySnapshot.forEach((doc) => {
+          const session = { id: doc.id, ...doc.data() };
+          newSessions.push(session);
         })
-        .then((newSessions) => {
-          setSessions(newSessions);
-        })
-      // setSessions(newSessions);
+        return newSessions;
+      })
+      .then((newSessions) => {
+        setSessions(newSessions);
+      });
     }
   }, [display, setSessions]);
 
@@ -245,6 +244,11 @@ function App() {
       }
     }
   }
+
+  const displayImage = () => {
+    setDisplay('image');
+  }
+
   const captureImgClick = (event) => {
     // click
     const newCoord = [event.clientX, event.clientY]
@@ -296,7 +300,7 @@ function App() {
         </div>
       ) : undefined }
 
-      <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } />
+      <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
 
       <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
 

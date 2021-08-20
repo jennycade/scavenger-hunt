@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 
 
 const Scoreboard = ( props ) => {
-  const { sessions, sessionID, hidden } = props;
+  const { sessions, sessionID, hidden, closefn } = props;
   // sessions is an array from firestore
   // arr sessions = [ { id, startTime, endTime, totalms, userName }, ... ]
-
-  // TODO: sessions.map() displays nothing unless the timer is running in App.js
 
   const [scores, setScores] = useState([...sessions]);
 
@@ -15,21 +13,26 @@ const Scoreboard = ( props ) => {
   }, [sessions]);
 
   return (
-    <div className={ 'scoreboard' + (hidden && ' hidden') }>
+    <div className={ 'scoreboard' + (hidden ? ' hidden' : '') }>
       <header>High Scores</header>
       <p>{ scores.length } people have completed the game.</p>
       <ul>
+        <li className="titles">
+          <span className="username">Name</span>
+          <span className="totalms">Milliseconds to complete</span>
+        </li>
         { scores.map( (session) => {
           let className = '';
           if (sessionID === session.id) {
             className = 'self';
           }
           return (<li key={ session.id } className={ className }>
-            { session.userName }
-            { session.totalms }
+            <span className="username">{ session.userName }</span>
+            <span className="totalms">{ session.totalms }</span>
           </li>);
         } )}
       </ul>
+      <button onClick={ closefn }>Close</button>
     </div>
   );
 }
