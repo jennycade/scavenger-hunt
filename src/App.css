@@ -64,6 +64,20 @@ img.scavengerhunt {
   display: none;
 }
 
+/* TAGGED ITEMS */
+.itemBorder {
+  border: 2px solid white;
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0);
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 7px 29px 0px;
+}
+.itemBorder:hover {
+  color: white;
+}
+.itemBorder label {
+  /* position better */
+}
+
 /* SCOREBOARD */
 .submitScore {
   position: fixed;

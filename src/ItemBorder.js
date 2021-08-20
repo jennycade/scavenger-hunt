@@ -14,7 +14,6 @@ const ItemBorder = ( props ) => {
   // style
   const style = {
     position: 'absolute',
-    border: '1px solid red',
     top: item.miny * yscale + yoffset,
     left: item.minx * xscale + xoffset,
     height: (item.maxy - item.miny) * yscale,
@@ -22,7 +21,7 @@ const ItemBorder = ( props ) => {
   }
 
   return (
-    <div style={ style } className="itemBorder">{ item.name }</div>
+    <div style={ style } className="itemBorder"><label>{ item.name }</label></div>
   );
 }
 
