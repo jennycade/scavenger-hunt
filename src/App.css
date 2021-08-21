@@ -70,12 +70,18 @@ img.scavengerhunt {
   border-radius: 3px;
   color: rgba(255, 255, 255, 0);
   box-shadow: rgba(0, 0, 0, 0.8) 0px 7px 29px 0px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
-.itemBorder:hover {
-  color: white;
+.itemBorder:hover label {
+  background-color: white;
+  color: black;
 }
 .itemBorder label {
   /* position better */
+  font-size: 0.75rem;
 }
 
 /* SCOREBOARD */
@@ -86,7 +92,8 @@ img.scavengerhunt {
   transform: translate(-50%, -50%);
   z-index: 2;
 
-  background-color: navy;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
   color: white;
   width: 30%;
   padding: 2rem;
@@ -101,7 +108,8 @@ img.scavengerhunt {
   transform: translate(-50%, -50%);
   z-index: 2;
 
-  background-color: navy;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   width: 67%;
   padding: 2rem;
