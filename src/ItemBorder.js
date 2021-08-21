@@ -1,6 +1,6 @@
 const ItemBorder = ( props ) => {
   // destructure props
-  const { item, imgRectangle, dim } = props;
+  const { item, imgRectangle, dim, captureImgClick } = props;
 
   // ahhhhh geometry
   const imgWidth = imgRectangle.right - imgRectangle.left;
@@ -21,7 +21,7 @@ const ItemBorder = ( props ) => {
   }
 
   return (
-    <div style={ style } className="itemBorder"><label>{ item.name }</label></div>
+    <div style={ style } className="itemBorder" onClick={ captureImgClick }><label>{ item.name }</label></div>
   );
 }
 

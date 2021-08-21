@@ -283,17 +283,21 @@ function App() {
   // CAPTURE CLICK (on image)
   const captureImgClick = (event) => { // TODO: change so this works when ItemBorder is clicked too
     // click
-    const newCoord = [event.clientX, event.clientY]
+    const newCoord = [event.clientX, event.clientY] // relative to viewport
     setCoord(newCoord);
 
-    // set imgRef on first click
-    if (event.target.className === 'scavengerhunt' && imgRef === '') {
-      setImgRef(event.target);
-    }
+    let newImgRectangle;
 
-    // read in position of image, in case of resize or scroll
-    const newImgRectangle = event.target.getBoundingClientRect()
-    setImgRectangle(newImgRectangle);
+    // set imgRef on first click
+    if (imgRef === '') { // NOTE: This breaks if an ItemBorder is clicked before the image is clicked -- which should be impossible.
+      setImgRef(event.target);
+
+      // read in position of image, in case of resize or scroll
+      newImgRectangle = event.target.getBoundingClientRect()
+      setImgRectangle(newImgRectangle);
+    } else {
+      newImgRectangle = imgRectangle;
+    }
 
     // page position
     setPageX(event.pageX);
@@ -350,7 +354,7 @@ function App() {
         
       </div>
       
-      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } />) }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={captureImgClick} />) }
 
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } items={ items } tagItem={ tagItem } /> : undefined }
 
