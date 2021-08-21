@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // components
+import ScavengerHuntImage from './ScavengerHuntImage';
 import Menu from './Menu';
 import ItemBorder from './ItemBorder';
 
@@ -17,6 +18,7 @@ function App() {
   const dim = { width: 1200, height: 1840 };
 
   // state variables // TODO: cull these!
+  const [imgRef, setImgRef] = useState('');
   const [coord, setCoord] = useState([]);
   const [imgRectangle, setImgRectangle] = useState([]);
   const [relCoord, setRelCoord] = useState([]);
@@ -249,10 +251,45 @@ function App() {
     setDisplay('image');
   }
 
-  const captureImgClick = (event) => {
+  // effect to re-render ItemBorders with resize
+
+  // debounce - don't re-render too often
+  const debounce = (fn, ms) => {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        fn.apply(this, arguments)
+      }, ms);
+    };
+  }
+  useEffect(() => {
+    const debounceHandleResize = debounce(function handleResize() {
+      if (imgRef) {
+        // call getBoundingClientRect() on the image
+        const newImgRectangle = imgRef.getBoundingClientRect()
+        setImgRectangle(newImgRectangle);
+      }
+    }, 500);
+    // attach listener
+    window.addEventListener('resize', debounceHandleResize);
+    // clean up
+    return () => {
+      window.removeEventListener('resize', debounceHandleResize);
+    }
+  })
+
+  // CAPTURE CLICK (on image)
+  const captureImgClick = (event) => { // TODO: change so this works when ItemBorder is clicked too
     // click
     const newCoord = [event.clientX, event.clientY]
     setCoord(newCoord);
+
+    // set imgRef on first click
+    if (event.target.className === 'scavengerhunt' && imgRef === '') {
+      setImgRef(event.target);
+    }
 
     // read in position of image, in case of resize or scroll
     const newImgRectangle = event.target.getBoundingClientRect()
@@ -302,7 +339,7 @@ function App() {
 
       <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
 
-      <img onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scaveger hunt"></img>
+      <ScavengerHuntImage onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
 
       <div className="info">
         <p>Time: { formatTime(time) }</p>
