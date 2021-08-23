@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 
 // components
 import ScavengerHuntImage from './ScavengerHuntImage';
+import Sidebar from './Sidebar';
 import Menu from './Menu';
 import ItemBorder from './ItemBorder';
+import Scoreboard from './Scoreboard';
 
 import './App.css';
 
@@ -11,7 +13,6 @@ import internet from './the-internet.jpg';
 import FadingMessage from './FadingMessage';
 
 import { firebase, app, db } from './Config';
-import Scoreboard from './Scoreboard';
 
 function App() {
   // constants
@@ -314,20 +315,6 @@ function App() {
     setDisplay('menu');
   }
 
-  // FORMAT TIME
-  const formatTime = (seconds) => {
-    if (seconds < 60) { // seconds
-      return `${seconds}`.padStart(3, ':00'); // TODO: Make this match format 00:00 without screwing up time >= 60
-
-    } else if (seconds < 60 * 60) { // minutes
-      const remainder = seconds % 60;
-      return `${(seconds - remainder) / 60}${formatTime(remainder)}`.padStart(5, '0');
-    } else { // hours
-      const remainder = seconds % (60*60);
-      return `${(seconds - remainder) / (60*60)}:${formatTime(remainder)}`;
-    }
-  }
-
   // RENDER
   return (
     <div className="App" onClick={ escapeMenu }>
@@ -345,16 +332,9 @@ function App() {
 
       <ScavengerHuntImage onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
 
-      <div className="info">
-        <p>Time: { formatTime(time) }</p>
-        <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
-        <p>Session ID: { sessionID }</p>
-        <p>Total time: { totalms }</p>
-        <p><button onClick={ () => setDisplay('scores') } >High Scores</button></p>
-        
-      </div>
+      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } />
       
-      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={captureImgClick} />) }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } />) }
 
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } imgRectangle={ imgRectangle } items={ items } tagItem={ tagItem } /> : undefined }
 
