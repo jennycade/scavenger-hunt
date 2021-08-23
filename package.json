@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
-    "firebase": "^8.9.1"
+    "firebase": "^8.9.1",
+    "firebase-admin": "^9.11.1"
   }
 }

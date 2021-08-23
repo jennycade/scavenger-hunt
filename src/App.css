@@ -68,6 +68,9 @@ img.scavengerhunt {
 .foundItem {
   color: rgba(0, 0, 0, 0.2);
 }
+.menu .foundItem {
+  display: none;
+}
 
 /* MISC */
 

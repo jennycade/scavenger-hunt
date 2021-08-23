@@ -26,7 +26,7 @@ const Sidebar = ( props ) => {
         <header>Items to find</header>
         <ul>
         { items.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
-            return (<li className={item.found ? 'foundItem' : 'unfoundItem'} key={ item.name }>{ item.name }</li>);
+            return (<li className={item.found ? 'foundItem' : 'unfoundItem'} key={ item.id }>{ item.name }</li>);
         }) }
         </ul>
       </div>

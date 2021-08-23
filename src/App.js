@@ -66,7 +66,7 @@ function App() {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach((doc) => {
-          newItems.push(doc.data());
+          newItems.push({id: doc.id, ...doc.data()});
         });
       });
     setItems(newItems);
@@ -286,7 +286,7 @@ function App() {
 
       <Sidebar time={ time } items={ items } setDisplay={ setDisplay } />
       
-      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.name } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } />) }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.id } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } />) }
 
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } imgRectangle={ imgRectangle } items={ items } tagItem={ tagItem } /> : undefined }
 
