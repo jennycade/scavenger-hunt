@@ -12,7 +12,7 @@ import './App.css';
 import internet from './the-internet.jpg';
 import FadingMessage from './FadingMessage';
 
-import { firebase, app, db } from './Config';
+import { firebase, db } from './Config';
 
 function App() {
   // constants
@@ -20,7 +20,6 @@ function App() {
 
   // state variables // TODO: cull these!
   const [imgRef, setImgRef] = useState('');
-  const [coord, setCoord] = useState([]);
   const [imgRectangle, setImgRectangle] = useState([]);
   const [relCoord, setRelCoord] = useState([]);
   const [pageX, setPageX] = useState(0);
@@ -143,7 +142,6 @@ function App() {
         foundItem.miny / dim.height < relCoord[1] &&
         foundItem.maxy / dim.height > relCoord[1]
       ) {
-        console.log(`You found ${foundItem.name}`);
         // assign item found: true
         foundItem.found = true;
 
@@ -285,7 +283,6 @@ function App() {
   const captureImgClick = (event) => { // TODO: change so this works when ItemBorder is clicked too
     // click
     const newCoord = [event.clientX, event.clientY] // relative to viewport
-    setCoord(newCoord);
 
     let newImgRectangle;
 
