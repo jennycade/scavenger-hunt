@@ -28,6 +28,7 @@ function App() {
   const [items, setItems] = useState([]);
 
   const [display, setDisplay] = useState('image');
+  const [playing, setPlaying] = useState(true);
 
   // timer
   const [runTimer, setRunTimer] = useState(false);
@@ -143,6 +144,9 @@ function App() {
     // stop the clock
     setRunTimer(false);
 
+    // update state
+    setPlaying(false);
+
     // record end time in firebase
     const sessionRef = db.collection('sessions').doc(sessionID);
     sessionRef.update({
@@ -208,13 +212,20 @@ function App() {
   }
 
   // DISPLAY CHANGE ON CLICKS
-  const escapeMenu = (event) => {
-    if (event.target.className === 'App') { // clicked outside the image and menu
-      if (display !== 'scores') {
+  
+
+  useEffect(() => {
+    const escapeMenu = (event) => {
+      if (event.target.id === 'root') { // clicked outside the image and menu
         setDisplay('image');
       }
     }
-  }
+    window.addEventListener('click', escapeMenu);
+    // clean up
+    return () => {
+      window.removeEventListener('click', escapeMenu);
+    }
+  })
 
   const displayImage = () => {
     setDisplay('image');
@@ -284,7 +295,7 @@ function App() {
 
   // RENDER
   return (
-    <div className="App" onClick={ escapeMenu }>
+    <div className="App">
       <FadingMessage message={ message } delay={ 5000 } />
 
       { display === 'submit score' ? (
@@ -297,7 +308,7 @@ function App() {
 
       <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
 
-      <ScavengerHuntImage onClick={ captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
+      <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
 
       <Sidebar time={ time } items={ items } setDisplay={ setDisplay } />
       

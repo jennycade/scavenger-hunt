@@ -6,7 +6,7 @@ const ItemBorder = ( props ) => {
   const imgWidth = imgRectangle.right - imgRectangle.left;
   const imgHeight = imgRectangle.bottom - imgRectangle.top;
 
-  const xscale = imgWidth / dim.width; // TODO: Make this state variable to work with resizing?
+  const xscale = imgWidth / dim.width;
   const yscale = imgHeight / dim.height;
   const xoffset = imgRectangle.left;
   const yoffset = imgRectangle.top;
