@@ -133,6 +133,9 @@ img.scavengerhunt {
   transform: translate(-50%, -50%);
   z-index: 2;
 
+  max-height: 100vh;
+  overflow-y: auto;
+
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -161,11 +164,20 @@ img.scavengerhunt {
 }
 
 .scoreboard li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 4rem 1fr 1fr;
+
+  padding: 0.25rem;
+}
+
+.scoreboard li:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.scoreboard .titles:hover {
+  background-color: inherit;
 }
 
 .scoreboard li.self {
-  background-color: orange;
-  padding: 0.5rem 0;
+  background-color: rgb(31, 98, 197);
 }

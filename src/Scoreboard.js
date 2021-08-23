@@ -18,15 +18,17 @@ const Scoreboard = ( props ) => {
       <p>{ scores.length } people have completed the game.</p>
       <ul>
         <li className="titles">
+          <span className="rank">Rank</span>
           <span className="username">Name</span>
           <span className="totalms">Milliseconds to complete</span>
         </li>
-        { scores.map( (session) => {
+        { scores.map( (session, index) => {
           let className = '';
           if (sessionID === session.id) {
             className = 'self';
           }
           return (<li key={ session.id } className={ className }>
+            <span className="rank">{ index + 1 }</span>
             <span className="username">{ session.userName }</span>
             <span className="totalms">{ session.totalms }</span>
           </li>);
