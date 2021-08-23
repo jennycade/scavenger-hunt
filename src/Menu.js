@@ -2,12 +2,14 @@
 
 const Menu = (props) => {
   // props
-  const { pageX, pageY, items, tagItem } = props;
+  const { pageX, pageY, imgRectangle, items, tagItem } = props;
 
   const style = {
     position: 'absolute',
     left: pageX,
     top: pageY,
+    maxHeight: imgRectangle.bottom - pageY - 2,
+    overflowY: 'auto',
   }
 
   return (
