@@ -25,7 +25,9 @@ img.scavengerhunt {
 /* SIDEBAR */
 .sidebar {
   min-width: 20rem;
-  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr;
 }
 
 /* info box */
@@ -35,6 +37,12 @@ img.scavengerhunt {
   background-color: navy;
   color: white;
   font-weight: bold;
+}
+
+/* itemList */
+
+.itemList {
+  overflow-y: auto;
 }
 
 /* MENU + SIDEBAR LIST */

@@ -310,7 +310,7 @@ function App() {
 
       <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
 
-      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } />
+      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing } />
       
       { items.filter( item => item.found ).map( item => <ItemBorder key={ item.id } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } />) }
 

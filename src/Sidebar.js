@@ -1,5 +1,5 @@
 const Sidebar = ( props ) => {
-  const { time, items, setDisplay } = props;
+  const { time, items, setDisplay, playing } = props;
 
   // FORMAT TIME
   const formatTime = (seconds) => {
@@ -20,10 +20,9 @@ const Sidebar = ( props ) => {
       <div className="info">
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
-        <p><button onClick={ () => setDisplay('scores') } >High Scores</button></p>
+        <p>{ !playing && <button onClick={ () => setDisplay('scores') } >High Scores</button> }</p>
       </div>
       <div className="itemList">
-        <header>Items to find</header>
         <ul>
         { items.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
             return (<li className={item.found ? 'foundItem' : 'unfoundItem'} key={ item.id }>{ item.name }</li>);
