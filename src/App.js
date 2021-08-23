@@ -83,30 +83,45 @@ function App() {
   }, [time, runTimer]);
 
   // TAGGING
-  const tagItem = (itemName) => {
+  const tagItem = (itemName) => { // called when user clicks on an item from the <Menu />
     // get the right item
     const newItems = [...items];
-    const foundItem = newItems.filter(item => item.name === itemName)[0] // TODO: Rewrite for multiple matches (cats!)
-    const foundIndex = items.indexOf(foundItem);
-    // check coordinates (& not already found)
-    if (!foundItem.found) { // not already found
-      // calculate relative coords
-      if (
-        foundItem.minx / dim.width < relCoord[0] &&
-        foundItem.maxx / dim.width > relCoord[0] &&
-        foundItem.miny / dim.height < relCoord[1] &&
-        foundItem.maxy / dim.height > relCoord[1]
-      ) {
-        // assign item found: true
-        foundItem.found = true;
 
-        // update the items state variable
-        newItems.splice(foundIndex, 1, foundItem);
-        setItems(newItems);
-      } else {
-        displayMessage(`Nope, ${foundItem.name} isn't there. Try again.`);
+    // filter items to matching name(s)
+    const foundItems = newItems.filter(item => item.name === itemName) // TODO: Rewrite for multiple matches (cats!)
+
+    let success = false;
+
+    for (let i=0; i<foundItems.length; i++ ) {
+      
+      const foundIndex = items.indexOf(foundItems[i]);
+      // check coordinates (& not already found)
+      if (!foundItems[i].found) { // not already found -- shouldn't actually need to check this
+        // calculate relative coords
+        if (
+          foundItems[i].minx / dim.width < relCoord[0] &&
+          foundItems[i].maxx / dim.width > relCoord[0] &&
+          foundItems[i].miny / dim.height < relCoord[1] &&
+          foundItems[i].maxy / dim.height > relCoord[1]
+        ) {
+          success = true;
+
+          // assign item found: true
+          foundItems[i].found = true;
+  
+          // update the items state variable
+          newItems.splice(foundIndex, 1, foundItems[i]);
+          setItems(newItems);
+          break;
+        }
       }
     }
+
+    // failed to find it
+    if (! success) {
+      displayMessage(`Nope, ${itemName} isn't there. Try again.`);
+    }
+    
     // update display
     setDisplay('image')
 
@@ -242,7 +257,7 @@ function App() {
     let newImgRectangle;
 
     // set imgRef on first click
-    if (imgRef === '') { // NOTE: This breaks if an ItemBorder is clicked before the image is clicked -- which should be impossible.
+    if (imgRef === '') { // NOTE: This will break if an ItemBorder is clicked before the image is clicked -- but that should be impossible.
       setImgRef(event.target);
 
       // read in position of image, in case of resize or scroll

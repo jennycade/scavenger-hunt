@@ -1,9 +1,18 @@
-
-
 const Menu = (props) => {
   // props
   const { pageX, pageY, imgRectangle, items, tagItem } = props;
 
+  // filter out non-unique and found items
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  const menuItems = items
+    .filter( (itemObj) => ! itemObj.found) // filter out found items
+    .map( (itemObj) => itemObj.name) // extract name
+    .filter(onlyUnique);
+
+  // style
   const style = {
     position: 'absolute',
     left: pageX,
@@ -16,8 +25,8 @@ const Menu = (props) => {
     <div className="menu" style={style}>
       <header>Choose an item</header>
       <ul>
-        { items.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
-            return (<li className={item.found ? 'foundItem' : 'unfoundItem'} onClick={ () => tagItem(item.name) } key={ item.id }>{ item.name }</li>);
+        { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
+            return (<li onClick={ () => tagItem(item) } key={ item }>{ item }</li>);
         }) }
       </ul>
     </div>

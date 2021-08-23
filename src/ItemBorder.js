@@ -20,6 +20,8 @@ const ItemBorder = ( props ) => {
     width: (item.maxx - item.minx) * xscale,
   }
 
+  // TODO: add class 'noBottomBorder' for items within 2 px of the bottom of the image
+
   return (
     <div style={ style } className="itemBorder" onClick={ captureImgClick }><label>{ item.name }</label></div>
   );
