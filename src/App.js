@@ -18,7 +18,7 @@ function App() {
   // constants
   const dim = { width: 1200, height: 1840 };
 
-  // state variables // TODO: cull these!
+  // state variables
   const [imgRef, setImgRef] = useState('');
   const [imgRectangle, setImgRectangle] = useState([]);
   const [relCoord, setRelCoord] = useState([]);
@@ -26,51 +26,7 @@ function App() {
   const [pageY, setPageY] = useState(0);
 
   const [items, setItems] = useState([]);
-  // const [items, setItems] = useState([ // { str name, bool found, int minx, int miny, int maxx, int maxy }
-  //   // {name: 'The death of print', found: false, },
-  //   {name: 'Audible', found: false, minx: 617, miny: 980, maxx: 685, maxy: 1027},
-  //   {name: 'Reddit robot', found: false, minx: 194, miny: 1103, maxx: 280, maxy: 1209},
-  //   {name: 'Amazon\'s expanding brand', found: false, minx: 519, miny: 1200, maxx: 837, maxy: 1408},
-  //   // {name: 'Uber', found: false, },
-  //   // {name: 'Nine cats', found: false, },
-  //   // {name: 'Twitch', found: false, },
-  //   // {name: 'Rabbit hole', found: false, },
-  //   // {name: 'Windows', found: false, },
-  //   // {name: 'Lyft', found: false, },
-  //   // {name: 'Ask Jeeves', found: false, },
-  //   // {name: 'Viagra', found: false, },
-  //   // {name: 'Trump', found: false, },
-  //   // {name: 'Trumpet', found: false, },
-  //   // {name: 'Aaron Zonka\'s initials', found: false, },
-  //   // {name: 'Apple', found: false, },
-  //   // {name: 'Goodreads', found: false, },
-  //   // {name: 'Owl with a hat', found: false, },
-  //   {name: 'IMDb', found: false, minx: 910, miny: 1252, maxx: 996, maxy: 1332},
-  //   // {name: 'YouTube', found: false, },
-  //   // {name: 'Bernie Sanders', found: false, },
-  //   // {name: 'Beyoncé', found: false, },
-  //   // {name: 'Netflix', found: false, },
-  //   // {name: 'Pinterest', found: false, },
-  //   // {name: 'Snapchat', found: false, },
-  //   // {name: 'Bitcoin', found: false, },
-  //   {name: 'Google\'s lofty heights', found: false, minx: 55, miny: 297, maxx: 378, maxy: 317}, // TODO: Fix the y coords!
-  //   // {name: 'Earbuds', found: false, },
-  //   // {name: 'Corgi butt', found: false, },
-  //   // {name: 'Sandwich', found: false, },
-  //   // {name: 'Twitter', found: false, },
-  //   // {name: 'Lol', found: false, },
-  //   // {name: 'Firefox', found: false, },
-  //   // {name: 'Instagram', found: false, },
-  //   // {name: 'Poop emoji', found: false, },
-  //   // {name: 'Facebook', found: false, },
-  //   // {name: 'The dark web', found: false, },
-  //   // {name: 'Antiquated browsers', found: false, },
-  //   // {name: 'Spotify', found: false, },
-  //   // {name: 'topleft', found: true, minx: 0, miny: 0, maxx: 100, maxy: 100},
-  //   // {name: 'topright', found: true, minx: 1200-100, miny: 0, maxx: 1200, maxy: 100},
-  //   // {name: 'bottomleft', found: true, minx: 0, miny: 1840-100, maxx: 100, maxy: 1840},
-  //   // {name: 'bottomright', found: true, minx: 1200-100, miny: 1840-100, maxx: 1200, maxy: 1840},
-  // ]);
+
   const [display, setDisplay] = useState('image');
 
   // timer
@@ -85,9 +41,6 @@ function App() {
   const [totalms, setTotalms] = useState(Infinity);
   const [userName, setUserName] = useState('Anonymous');
   const [sessions, setSessions] = useState([]);
-
-  // test firebase
-  const firebaseApp = firebase.apps[0];
 
   // SESSION START
   useEffect(() => {
@@ -108,14 +61,16 @@ function App() {
   useEffect(() => {
     const newItems = [];
     // get items from database
-    db.collection('items').get()
+    db.collection('items')
+      .orderBy("name", "asc")
+      .get()
       .then(querySnapshot => {
         querySnapshot.forEach((doc) => {
           newItems.push(doc.data());
         });
       });
     setItems(newItems);
-  }, [firebaseApp]); // TODO: rewrite this to update based on sessions
+  }, [sessionID]); // TODO: rewrite this to update based on sessions
 
   // TIMER
   useEffect(() => {
