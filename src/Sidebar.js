@@ -1,3 +1,5 @@
+import ProgressBar from './ProgressBar';
+
 const Sidebar = ( props ) => {
   const { time, items, setDisplay, playing } = props;
 
@@ -15,13 +17,17 @@ const Sidebar = ( props ) => {
     }
   }
 
+  const numFoundItems = items.filter(item => item.found).length;
+  const numTotalItems = items.length;
+
   return (
     <div className="sidebar">
       <div className="info">
         <p>Time: { formatTime(time) }</p>
-        <p>Items found: { items.filter(item => item.found).length } / { items.length }</p>
+        <p>Items found: { numFoundItems } / { numTotalItems }</p>
         <p>{ !playing && <button onClick={ () => setDisplay('scores') } >High Scores</button> }</p>
       </div>
+      <ProgressBar numerator={ numFoundItems } denominator={ numTotalItems } />
       <div className="itemList">
         <ul>
         { items.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
