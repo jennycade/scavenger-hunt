@@ -13,8 +13,6 @@ body {
 
   border-right: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-  
 }
 
 
@@ -85,11 +83,20 @@ img.scavengerhunt {
   display: none;
 }
 
-/* MISC */
+/* FADING MESSAGE */
 
 .message {
   position: fixed;
   top: 0;
+  margin: 0;
+  padding: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 .hidden {
   display: none;
