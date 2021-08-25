@@ -7,7 +7,6 @@ const ProgressBar = ( props ) => {
 
   const innerStyle={
     width: `${numerator / denominator * 100}%`,
-    backgroundColor: 'green',
   };
 
   return (

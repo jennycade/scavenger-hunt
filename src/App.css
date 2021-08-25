@@ -197,3 +197,15 @@ img.scavengerhunt {
 .scoreboard li.self {
   background-color: rgb(31, 98, 197);
 }
+
+/* PROGRESS BAR */
+.outer {
+  /* box-shadow:  */
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-bottom:rgba(0, 0, 0, 0.2);
+}
+.inner {
+  background-color: rgb(249, 193, 80);
+  transition-property: 'width';
+  transition-duration: 0.5s;
+}
