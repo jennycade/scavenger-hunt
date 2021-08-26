@@ -26,7 +26,7 @@ const Menu = (props) => {
       <header>Choose an item</header>
       <ul>
         { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
-            return (<li onClick={ () => tagItem(item) } key={ item }>{ item }</li>);
+            return (<li onClick={ (event) => tagItem(item, event.timeStamp) } key={ item }>{ item }</li>);
         }) }
       </ul>
     </div>

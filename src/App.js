@@ -35,6 +35,7 @@ function App() {
   const [time, setTime] = useState(0);
 
   const [message, setMessage] = useState('');
+  const [messageId, setMessageId] = useState('');
 
   const [sessionID, setSessionID] = useState('');
 
@@ -84,7 +85,7 @@ function App() {
   }, [time, runTimer]);
 
   // TAGGING
-  const tagItem = (itemName) => { // called when user clicks on an item from the <Menu />
+  const tagItem = (itemName, timestamp) => { // called when user clicks on an item from the <Menu />
     // get the right item
     const newItems = [...items];
 
@@ -120,7 +121,7 @@ function App() {
 
     // failed to find it
     if (! success) {
-      displayMessage(`Nope, ${itemName} isn't there. Try again.`);
+      displayMessage(`Nope, the item "${itemName}" isn't there. Try again.`, timestamp);
     }
     
     // update display
@@ -133,7 +134,8 @@ function App() {
   }
 
   // display message
-  const displayMessage = (message) => {
+  const displayMessage = (message, timestamp) => {
+    setMessageId(timestamp);
     setMessage(message);
   }
 
@@ -296,7 +298,7 @@ function App() {
   // RENDER
   return (
     <div className="App">
-      <FadingMessage message={ message } delay={ 5000 } />
+      <FadingMessage messageId={ messageId } message={ message } delay={ 5000 } />
 
       { display === 'submit score' ? (
         <div className="submitScore">
