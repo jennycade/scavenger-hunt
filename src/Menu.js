@@ -4,12 +4,16 @@ const Menu = (props) => {
   // props
   const { pageX, pageY, imgRectangle, items, tagItem } = props;
 
-  const [anchor, setAnchor] = useState('top');
+  // state
+  const [anchor, setAnchor] = useState('click');
 
+  // ref
   const menuDiv = useRef(null);
 
-  // get height of <Menu>
-  // THIS IS COMPLETELY BROKEN! FIX IT!
+  // constants
+  const pointerHeight = 10;
+
+  // Set positioning (based on click or image top?)
   useLayoutEffect( () => {
     if (menuDiv) {
       // get a handle on the height
@@ -18,7 +22,7 @@ const Menu = (props) => {
       if (pageY + menuHeight > imgRectangle.bottom) {
         setAnchor('bottom');
       } else {
-        setAnchor('top');
+        setAnchor('click');
       }
 
       // TODO: Set pointY
@@ -29,14 +33,23 @@ const Menu = (props) => {
   const makeStyle = () => {
     const style = {
       position: 'absolute',
-      left: pageX,
+      left: pageX + pointerHeight - 1,
       maxHeight: '50%',
       overflowY: 'auto',
     }
-    if (anchor === 'top') {
-      style.top = pageY;
+    if (anchor === 'click') {
+      style.top = pageY - pointerHeight;
     } else {
       style.bottom = 0;
+    }
+    return style;
+  }
+
+  const makePointerStyle = () => {
+    const style = {
+      position: 'absolute',
+      left: pageX,
+      top: pageY - pointerHeight / 2,
     }
     return style;
   }
@@ -52,13 +65,17 @@ const Menu = (props) => {
     .filter(onlyUnique);
 
   return (
-    <div ref={ menuDiv } className="menu" style={ makeStyle() }>
-      <header>Choose an item</header>
-      <ul>
-        { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
-            return (<li onClick={ (event) => tagItem(item, event.timeStamp) } key={ item }>{ item }</li>);
-        }) }
-      </ul>
+    <div className="menuContainer">
+      <div className="menuPointer" style={ makePointerStyle() }></div>
+
+      <div ref={ menuDiv } className="menu" style={ makeStyle() }>
+        <header>Choose an item</header>
+        <ul>
+          { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
+              return (<li onClick={ (event) => tagItem(item, event.timeStamp) } key={ item }>{ item }</li>);
+          }) }
+        </ul>
+      </div>
     </div>
   );
 }
