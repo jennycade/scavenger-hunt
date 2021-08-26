@@ -4,8 +4,7 @@ const Menu = (props) => {
   // props
   const { pageX, pageY, imgRectangle, items, tagItem } = props;
 
-  const [style, setStyle] = useState({});
-
+  const [anchor, setAnchor] = useState('top');
 
   const menuDiv = useRef(null);
 
@@ -13,26 +12,34 @@ const Menu = (props) => {
   // THIS IS COMPLETELY BROKEN! FIX IT!
   useLayoutEffect( () => {
     if (menuDiv) {
+      // get a handle on the height
       const menuHeight = menuDiv.current.getBoundingClientRect().height;
-
-      const newStyle = {
-        position: 'absolute',
-        left: pageX,
-        maxHeight: '50%',
-        overflowY: 'auto',
-      };
   
       if (pageY + menuHeight > imgRectangle.bottom) {
-        newStyle.bottom = imgRectangle.height - imgRectangle.bottom;
+        setAnchor('bottom');
       } else {
-        newStyle.top = pageY;
+        setAnchor('top');
       }
-  
-      setStyle(newStyle);
+
+      // TODO: Set pointY
     }
     
-  }, [setStyle, pageY, imgRectangle.bottom, pageX]);
+  }, [setAnchor, pageY, imgRectangle.bottom]);
 
+  const makeStyle = () => {
+    const style = {
+      position: 'absolute',
+      left: pageX,
+      maxHeight: '50%',
+      overflowY: 'auto',
+    }
+    if (anchor === 'top') {
+      style.top = pageY;
+    } else {
+      style.bottom = 0;
+    }
+    return style;
+  }
 
   // filter out non-unique and found items (from https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates)
   function onlyUnique(value, index, self) {
@@ -45,7 +52,7 @@ const Menu = (props) => {
     .filter(onlyUnique);
 
   return (
-    <div ref={ menuDiv } className="menu" style={style}>
+    <div ref={ menuDiv } className="menu" style={ makeStyle() }>
       <header>Choose an item</header>
       <ul>
         { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
