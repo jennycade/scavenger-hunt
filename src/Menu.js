@@ -1,6 +1,38 @@
+import { useState, useLayoutEffect, useRef } from "react";
+
 const Menu = (props) => {
   // props
   const { pageX, pageY, imgRectangle, items, tagItem } = props;
+
+  const [style, setStyle] = useState({});
+
+
+  const menuDiv = useRef(null);
+
+  // get height of <Menu>
+  // THIS IS COMPLETELY BROKEN! FIX IT!
+  useLayoutEffect( () => {
+    if (menuDiv) {
+      const menuHeight = menuDiv.current.getBoundingClientRect().height;
+
+      const newStyle = {
+        position: 'absolute',
+        left: pageX,
+        maxHeight: '50%',
+        overflowY: 'auto',
+      };
+  
+      if (pageY + menuHeight > imgRectangle.bottom) {
+        newStyle.bottom = imgRectangle.height - imgRectangle.bottom;
+      } else {
+        newStyle.top = pageY;
+      }
+  
+      setStyle(newStyle);
+    }
+    
+  }, [setStyle, pageY, imgRectangle.bottom, pageX]);
+
 
   // filter out non-unique and found items (from https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates)
   function onlyUnique(value, index, self) {
@@ -12,17 +44,8 @@ const Menu = (props) => {
     .map( (itemObj) => itemObj.name) // extract name
     .filter(onlyUnique);
 
-  // style
-  const style = {
-    position: 'absolute',
-    left: pageX,
-    top: pageY,
-    maxHeight: imgRectangle.bottom - pageY - 2,
-    overflowY: 'auto',
-  }
-
   return (
-    <div className="menu" style={style}>
+    <div ref={ menuDiv } className="menu" style={style}>
       <header>Choose an item</header>
       <ul>
         { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
