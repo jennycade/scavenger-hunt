@@ -62,6 +62,7 @@ img.scavengerhunt {
   border-right: 10px solid rgba(255, 255, 255, .8);
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
+  z-index: 2;
 }
 
 .menu header, .menu li, .itemList header, .itemList li {

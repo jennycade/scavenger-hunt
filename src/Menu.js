@@ -33,12 +33,12 @@ const Menu = (props) => {
   const makeStyle = () => {
     const style = {
       position: 'absolute',
-      left: pageX + pointerHeight - 1,
+      left: pageX + pointerHeight,
       maxHeight: '50%',
       overflowY: 'auto',
     }
     if (anchor === 'click') {
-      style.top = pageY - pointerHeight;
+      style.top = pageY - pointerHeight * 1.5;
     } else {
       style.bottom = 0;
     }
@@ -49,7 +49,7 @@ const Menu = (props) => {
     const style = {
       position: 'absolute',
       left: pageX,
-      top: pageY - pointerHeight / 2,
+      top: pageY - pointerHeight,
     }
     return style;
   }
@@ -69,7 +69,7 @@ const Menu = (props) => {
       <div className="menuPointer" style={ makePointerStyle() }></div>
 
       <div ref={ menuDiv } className="menu" style={ makeStyle() }>
-        <header>Choose an item</header>
+        <header>What's here?</header>
         <ul>
           { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
               return (<li onClick={ (event) => tagItem(item, event.timeStamp) } key={ item }>{ item }</li>);
