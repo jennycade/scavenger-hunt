@@ -1,0 +1,41 @@
+.toggleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.toggle label {
+  margin-left: 0.5rem;
+}
+
+.toggle {
+  width: 2rem;
+  height: 1rem;
+
+  margin-right: 0.5rem;
+
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  border-radius: 0.5rem;
+
+  display: flex;
+  align-items: center;
+
+  transition-property: 'justify-content';
+  transition-duration: 0.5s;
+}
+
+.toggleOn {
+  justify-content: flex-start;
+}
+.toggleOff {
+  justify-content: flex-end;
+}
+
+.innerToggle {
+  margin: 0 0.2rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 50%;
+}

@@ -1,3 +1,5 @@
+import './Toggle.css';
+
 const Toggle = ( props ) => {
   // destructure props
   const { on, label, turnOn, turnOff } = props;
