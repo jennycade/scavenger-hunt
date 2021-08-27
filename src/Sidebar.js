@@ -26,6 +26,7 @@ const Sidebar = ( props ) => {
         <p>Time: { formatTime(time) }</p>
         <p>Items found: { numFoundItems } / { numTotalItems }</p>
         <p>{ !playing && <button onClick={ () => setDisplay('scores') } >High Scores</button> }</p>
+        { props.children }
       </div>
       <ProgressBar numerator={ numFoundItems } denominator={ numTotalItems } />
       <div className="itemList">

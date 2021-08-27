@@ -1,6 +1,6 @@
 const ItemBorder = ( props ) => {
   // destructure props
-  const { item, imgRectangle, dim, captureImgClick } = props;
+  const { item, imgRectangle, dim, captureImgClick, visible } = props;
 
   // ahhhhh geometry
   const imgWidth = imgRectangle.right - imgRectangle.left;
@@ -20,10 +20,8 @@ const ItemBorder = ( props ) => {
     width: (item.maxx - item.minx) * xscale,
   }
 
-  // TODO: add class 'noBottomBorder' for items within 2 px of the bottom of the image
-
   return (
-    <div style={ style } className="itemBorder" onClick={ captureImgClick }><label>{ item.name }</label></div>
+    <div style={ style } className={ visible ? "itemBorder" : 'hidden' } onClick={ captureImgClick }><label>{ item.name }</label></div>
   );
 }
 

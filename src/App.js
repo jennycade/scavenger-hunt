@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import Menu from './Menu';
 import ItemBorder from './ItemBorder';
 import Scoreboard from './Scoreboard';
+import Toggle from './Toggle';
 
 import './App.css';
 
@@ -43,6 +44,9 @@ function App() {
   const [totalms, setTotalms] = useState(Infinity);
   const [userName, setUserName] = useState('Anonymous');
   const [sessions, setSessions] = useState([]);
+
+  // hide itemBorders
+  const [showItemBorders, setShowItemBorders] = useState(true);
 
   // SESSION START
   useEffect(() => {
@@ -214,7 +218,6 @@ function App() {
   }
 
   // DISPLAY CHANGE ON CLICKS
-  
 
   useEffect(() => {
     const escapeMenu = (event) => {
@@ -260,7 +263,7 @@ function App() {
     return () => {
       window.removeEventListener('resize', debounceHandleResize);
     }
-  })
+  });
 
   // CAPTURE CLICK (on image)
   const captureImgClick = (event) => { // TODO: change so this works when ItemBorder is clicked too
@@ -312,9 +315,16 @@ function App() {
 
       <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
 
-      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing } />
+      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing }>
+        <Toggle
+          on={ showItemBorders }
+          label="Show item borders"
+          turnOn={ () => setShowItemBorders(true) }
+          turnOff={ () => setShowItemBorders(false) }
+        />
+      </Sidebar>
       
-      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.id } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } />) }
+      { items.filter( item => item.found ).map( item => <ItemBorder key={ item.id } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } visible={ showItemBorders } />) }
 
       { display === 'menu' ? <Menu pageX={ pageX } pageY={ pageY } imgRectangle={ imgRectangle } items={ items } tagItem={ tagItem } /> : undefined }
 
