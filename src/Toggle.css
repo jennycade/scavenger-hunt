@@ -18,21 +18,23 @@
   border: 1px solid rgba(0, 0, 0, 0.9);
   border-radius: 0.5rem;
 
-  display: flex;
-  align-items: center;
-
-  transition-property: 'justify-content';
-  transition-duration: 0.5s;
+  position: relative;
 }
 
-.toggleOn {
-  justify-content: flex-start;
+.toggleOn .innerToggle {
+  left: 0;
 }
-.toggleOff {
-  justify-content: flex-end;
+.toggleOff .innerToggle {
+  left: .8rem;
 }
 
 .innerToggle {
+  position: absolute;
+  top: 0.1rem;
+
+  transition-property: all;
+  transition-duration: 0.1s;
+
   margin: 0 0.2rem;
   width: 0.8rem;
   height: 0.8rem;
