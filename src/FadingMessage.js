@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 
 const FadingMessage = ( props ) => {
   const { delay, message, messageId } = props;
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(true);
-    setTimeout(() => {
-      setVisible(false);
-    }, delay);
-  }, [delay, messageId]);
+    if (message) {
+      setVisible(true);
+      setTimeout(() => {
+        setVisible(false);
+      }, delay);
+    }
+  }, [message, delay, messageId]);
 
   // TODO: Make the image re-display even if the message is the same. How? ::shrug::
   // maybe App has state variable `messages` that messages push onto when they're visible and pop off of when they're hidden. Then multiple messages can be displayed as well as the same one multiple times in a row.
