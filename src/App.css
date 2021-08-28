@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 body {
   max-height: 100vh;
   overflow-y: hidden; /* doesn't work! whaaaaa? */
@@ -232,6 +234,7 @@ img.scavengerhunt {
   /* box-shadow:  */
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-bottom:rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .inner {
   height: 0.75rem;
@@ -260,4 +263,9 @@ button.close {
   border: none;
   color: rgba(0, 0, 0, 0.7);
   padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+/* TIME */
+time {
+  font-family: 'Roboto Mono', monospace;
 }
