@@ -7,6 +7,7 @@ import Menu from './Menu';
 import ItemBorder from './ItemBorder';
 import Scoreboard from './Scoreboard';
 import Toggle from './Toggle';
+import SubmitScore from './SubmitScore';
 
 import './App.css';
 
@@ -42,7 +43,6 @@ function App() {
 
   // scores
   const [totalms, setTotalms] = useState(Infinity);
-  const [userName, setUserName] = useState('Anonymous');
   const [sessions, setSessions] = useState([]);
 
   // hide itemBorders
@@ -180,12 +180,6 @@ function App() {
     }
   }, [totalms, sessionID]);
 
-  // input
-  const handleUserNameChange = (e) => {
-    const newValue = e.target.value;
-    setUserName(newValue);
-  }
-
   // effect to update scores
   useEffect(() => {
     if (display === 'scores') {
@@ -207,10 +201,10 @@ function App() {
     }
   }, [display, setSessions]);
 
-  const submitUserName = () => {
+  const submitUserName = (newUserName) => {
     const sessionRef = db.collection('sessions').doc(sessionID);
     sessionRef.update({
-      userName: userName,
+      userName: newUserName,
     })
     .then(() => {
       setDisplay('scores')
@@ -304,11 +298,8 @@ function App() {
       <FadingMessage messageId={ messageId } message={ message } delay={ 5000 } />
 
       { display === 'submit score' ? (
-        <div className="submitScore">
-          <label>Submit your name to the high scores list</label>
-          <input type='text' value={ userName } onChange={ handleUserNameChange } />
-          <button onClick={ submitUserName }>Submit</button>
-        </div>
+        <SubmitScore placeholder='Anonymous' submitUserName={ submitUserName } />
+        
       ) : undefined }
 
       <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
