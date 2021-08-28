@@ -1,21 +1,11 @@
 import ProgressBar from './ProgressBar';
 
+import formatTime from './formatTime';
+
 const Sidebar = ( props ) => {
   const { time, items, setDisplay, playing } = props;
 
   // FORMAT TIME
-  const formatTime = (seconds) => {
-    if (seconds < 60) { // seconds
-      return `${seconds}`.padStart(3, ':00'); // TODO: Make this match format 00:00 without screwing up time >= 60
-
-    } else if (seconds < 60 * 60) { // minutes
-      const remainder = seconds % 60;
-      return `${(seconds - remainder) / 60}${formatTime(remainder)}`.padStart(5, '0');
-    } else { // hours
-      const remainder = seconds % (60*60);
-      return `${(seconds - remainder) / (60*60)}:${formatTime(remainder)}`;
-    }
-  }
 
   const numFoundItems = items.filter(item => item.found).length;
   const numTotalItems = items.length;
@@ -23,7 +13,7 @@ const Sidebar = ( props ) => {
   return (
     <div className="sidebar">
       <div className="info">
-        <p>Time: { formatTime(time) }</p>
+        <p>Time: { formatTime(time, 's') }</p>
         <p>Items found: { numFoundItems } / { numTotalItems }</p>
         <p>{ !playing && <button onClick={ () => setDisplay('scores') } >High Scores</button> }</p>
         { props.children }

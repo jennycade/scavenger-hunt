@@ -8,11 +8,11 @@ import ItemBorder from './ItemBorder';
 import Scoreboard from './Scoreboard';
 import Toggle from './Toggle';
 import SubmitScore from './SubmitScore';
+import FadingMessage from './FadingMessage';
 
 import './App.css';
 
 import internet from './the-internet.jpg';
-import FadingMessage from './FadingMessage';
 
 import { firebase, db } from './Config';
 import StartScreen from './StartScreen';

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+import formatTime from './formatTime';
 
 const Scoreboard = ( props ) => {
   const { sessions, sessionID, hidden, closefn } = props;
@@ -20,7 +21,7 @@ const Scoreboard = ( props ) => {
         <li className="titles">
           <span className="rank">Rank</span>
           <span className="username">Name</span>
-          <span className="totalms">Milliseconds to complete</span>
+          <span className="totalms">Time to complete</span>
         </li>
         { scores.map( (session, index) => {
           let className = '';
@@ -30,7 +31,7 @@ const Scoreboard = ( props ) => {
           return (<li key={ session.id } className={ className }>
             <span className="rank">{ index + 1 }</span>
             <span className="username">{ session.userName }</span>
-            <span className="totalms">{ session.totalms }</span>
+            <span className="totalms">{ formatTime(session.totalms, 'ms') }</span>
           </li>);
         } )}
       </ul>
