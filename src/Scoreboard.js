@@ -31,7 +31,7 @@ const Scoreboard = ( props ) => {
           return (<li key={ session.id } className={ className }>
             <span className="rank">{ index + 1 }</span>
             <span className="username">{ session.userName }</span>
-            <span className="totalms">{ formatTime(session.totalms, 'ms') }</span>
+            <time className="totalms">{ formatTime(session.totalms, 'ms') }</time>
           </li>);
         } )}
       </ul>

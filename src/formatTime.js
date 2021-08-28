@@ -26,7 +26,7 @@ const formatTime = (num, unit) => {
   str += `${ minutes.toString().padStart(2, '0') }:`;
   str += `${ seconds.toString().padStart(2, '0') }`;
   if (decimal > 0) {
-    str += `.${ decimal }`;
+    str += `.${ decimal.toString().padEnd(3, '0') }`;
   }
 
   return str;
