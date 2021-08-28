@@ -30,7 +30,7 @@ function App() {
 
   // items
   const [items, setItems] = useState([]);
-  const [itemCount, setItemCount] = useState(0);
+  // const [itemCount, setItemCount] = useState(0);
 
   const [display, setDisplay] = useState('start');
   const [playing, setPlaying] = useState(true);
@@ -82,7 +82,7 @@ function App() {
         });
       });
     setItems(newItems);
-    setItemCount(newItems.length); // TODO: Fix this so that the number of items can be shown in the StartScreen
+    // setItemCount(newItems.length); // TODO: Fix this so that the number of items can be shown in the StartScreen
   }, []);
 
   // TIMER
@@ -318,7 +318,7 @@ function App() {
       <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
 
       { (display !== 'start') &&
-        <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
+        <ScavengerHuntImage onClick={ playing ? captureImgClick : undefined } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
       }
 
       { (display !== 'start') && <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing }>
