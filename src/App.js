@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 
 // components
 import ScavengerHuntImage from './ScavengerHuntImage';
@@ -15,6 +15,7 @@ import internet from './the-internet.jpg';
 import FadingMessage from './FadingMessage';
 
 import { firebase, db } from './Config';
+import StartScreen from './StartScreen';
 
 function App() {
   // constants
@@ -27,9 +28,11 @@ function App() {
   const [pageX, setPageX] = useState(0);
   const [pageY, setPageY] = useState(0);
 
+  // items
   const [items, setItems] = useState([]);
+  const [itemCount, setItemCount] = useState(0);
 
-  const [display, setDisplay] = useState('image');
+  const [display, setDisplay] = useState('start');
   const [playing, setPlaying] = useState(true);
 
   // timer
@@ -49,7 +52,7 @@ function App() {
   const [showItemBorders, setShowItemBorders] = useState(true);
 
   // SESSION START
-  useEffect(() => {
+  const startGame = () => {
     // add a game session in firebase
     db.collection('sessions').add({
       startTime: firebase.firestore.FieldValue.serverTimestamp(),
@@ -60,11 +63,14 @@ function App() {
 
       // start the timer
       setRunTimer(true);
+
+      // show the image
+      displayImage();
     });
-  }, []);
+  };
 
   // GET ITEMS
-  useEffect(() => {
+  useLayoutEffect(() => {
     const newItems = [];
     // get items from database
     db.collection('items')
@@ -76,7 +82,8 @@ function App() {
         });
       });
     setItems(newItems);
-  }, [sessionID]); // TODO: rewrite this to update based on sessions
+    setItemCount(newItems.length); // TODO: Fix this so that the number of items can be shown in the StartScreen
+  }, []);
 
   // TIMER
   useEffect(() => {
@@ -297,23 +304,31 @@ function App() {
     <div className="App">
       <FadingMessage messageId={ messageId } message={ message } delay={ 5000 } />
 
-      { display === 'submit score' ? (
+      { display === 'submit score' &&
         <SubmitScore placeholder='Anonymous' submitUserName={ submitUserName } />
-        
-      ) : undefined }
+      }
+
+      { (display === 'start') &&
+        <StartScreen img={internet} alt="Scavenger hunt thumbnail" startGame={ startGame }> <img className="thumbnail" src={ internet } alt="internet poster thumbnail" />
+          <p>The internet is full of things! How quickly can you find and tag 44 items in this poster? (Including nine cats!)</p>
+          <p>Original art by <a href="https://aaronzonka.com/">Aaron Zonka</a> available for purchase on <a href="https://www.etsy.com/ca/listing/569348462/the-internet-scavenger-hunt">Etsy</a></p>
+        </StartScreen>
+      }
 
       <Scoreboard sessionID={ sessionID } sessions={ sessions } hidden={ display!=='scores' } closefn={ displayImage } />
 
-      <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
+      { (display !== 'start') &&
+        <ScavengerHuntImage onClick={ playing && captureImgClick } className="scavengerhunt" src={internet} alt="Scavenger hunt"/>
+      }
 
-      <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing }>
+      { (display !== 'start') && <Sidebar time={ time } items={ items } setDisplay={ setDisplay } playing={ playing }>
         <Toggle
           on={ showItemBorders }
           label="Show item borders"
           turnOn={ () => setShowItemBorders(true) }
           turnOff={ () => setShowItemBorders(false) }
         />
-      </Sidebar>
+      </Sidebar> }
       
       { items.filter( item => item.found ).map( item => <ItemBorder key={ item.id } item={ item } imgRectangle={ imgRectangle } dim={ dim } captureImgClick={ captureImgClick } visible={ showItemBorders } />) }
 

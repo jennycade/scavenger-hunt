@@ -10,8 +10,6 @@ body {
   justify-content: space-between;
   width: min-content;
   margin: 0 auto;
-
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
@@ -26,6 +24,7 @@ img.scavengerhunt {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: min-content 1fr;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 /* info box */
