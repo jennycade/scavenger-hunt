@@ -2,7 +2,7 @@ import { useState, useLayoutEffect, useRef } from "react";
 
 const Menu = (props) => {
   // props
-  const { pageX, pageY, imgRectangle, items, tagItem } = props;
+  const { pageX, pageY, imgRectangle, items, tagItem, close } = props;
 
   // state
   const [anchor, setAnchor] = useState('click');
@@ -69,7 +69,10 @@ const Menu = (props) => {
       <div className="menuPointer" style={ makePointerStyle() }></div>
 
       <div ref={ menuDiv } className="menu" style={ makeStyle() }>
-        <header>What's here?</header>
+        <header>
+          <span>What's here?</span>
+          <button className="close" onClick={ close }>×</button>
+        </header>
         <ul>
           { menuItems.map( item => { // { str name, bool found, int minx, int miny, int maxx, int maxy }
               return (<li onClick={ (event) => tagItem(item, event.timeStamp) } key={ item }>{ item }</li>);
