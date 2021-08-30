@@ -19,3 +19,14 @@
 .thumbnail {
   width: 5rem;
 }
+
+.mobileOnly {
+  display: none;
+}
+
+@media only screen and (max-width: 800px) {
+  .mobileOnly {
+    display: block;
+    font-weight: bold;
+  }
+}
